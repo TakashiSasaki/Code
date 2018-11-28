@@ -15,5 +15,11 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
         return
     pass
 
-httpServer = http.server.HTTPServer(("", 8000), MyHandler)
+
+import ssl
+context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
+context.load_cert_chain("fullchain.pem", "privkey.pem")
+
+httpServer = http.server.HTTPServer(("", 18443), MyHandler)
+httpServer.socket = context.wrap_socket(httpServer.socket)
 httpServer.serve_forever()
