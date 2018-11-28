@@ -11,6 +11,19 @@ class MyHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write("world".encode("utf-8"))
             return
+        if self.path == "/nocors":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write("nocors".encode("utf-8"))
+            return
+        if self.path == "/cors":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            self.wfile.write("cors".encode("utf-8"))
+            return
         http.server.SimpleHTTPRequestHandler.do_GET(self)
         return
     pass
