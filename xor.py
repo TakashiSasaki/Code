@@ -1,3 +1,5 @@
+from singledispatch import singledispatch
+
 hexdict = {}
 for x in range(16):
     hexdict[format(x,"01x")] = {}
@@ -10,7 +12,7 @@ def xorHexStrings(hexString1:str, hexString2:str) -> str:
         z.append(hexdict[x.lower()][y.lower()])
     return "".join(z)
 
-def utf8md5Bytes(s : str) -> bytes:
+def utf8Md5Bytes(s : str) -> bytes:
     m = hashlib.md5()
     m.update(s.encode("utf-8"))
     return m.digest()
@@ -37,9 +39,10 @@ def bytesToHex(bytes1: bytes) -> str:
     return "".join([format(b, "02x") for b in bytes1])
 
 import hashlib
+
 def xorUtf8Md5(string1:str, string2:str) -> str:
-    bytes1 = utf8md5Bytes(string1)
-    bytes2 = utf8md5Bytes(string2)
+    bytes1 = utf8Md5Bytes(string1)
+    bytes2 = utf8Md5Bytes(string2)
     bytes3 =  xorBytes(bytes1, bytes2)
 
     hex1 = bytesToHex(bytes1)
@@ -61,6 +64,19 @@ def xorUtf8Sha1(string1: str, string2: str) -> str:
     assert(bytesToHex(bytes3) == hex3)
     return hex3
 
+import functools
+def xorUtf8Sha1All(stringList: list) -> str:
+    bytesList = map(lambda x: utf8Sha1Bytes(x), stringList)
+    x = functools.reduce(lambda x,y: xorBytes(x,y), bytesList)
+    return bytesToHex(x)
+
+def xorUtf8Md5All(stringList: list) -> str:
+    bytesList = map(lambda x: utf8Md5Bytes(x), stringList)
+    x = functools.reduce(lambda x,y: xorBytes(x,y), bytesList)
+    return bytesToHex(x)
+
 if __name__ == "__main__":
     print(xorUtf8Md5("hello", "world"))
     print(xorUtf8Sha1("hello", "world"))
+    print(xorUtf8Sha1All(["hello", "world"]))
+    print(xorUtf8Md5All(["hello", "world"]))
