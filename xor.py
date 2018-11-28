@@ -10,46 +10,56 @@ def xorHexStrings(hexString1:str, hexString2:str) -> str:
         z.append(hexdict[x.lower()][y.lower()])
     return "".join(z)
 
-def xorBytes(byte1: bytes, byte2: bytes) -> bytearray:
-    ba = bytearray()
-    for x,y in zip(byte1, byte2):
-        ba.append(x^y)
-    return ba
+def utf8md5Bytes(s : str) -> bytes:
+    m = hashlib.md5()
+    m.update(s.encode("utf-8"))
+    return m.digest()
+
+def utf8md5Hex(s:str) -> str:
+    m = hashlib.md5()
+    m.update(s.encode("utf-8"))
+    return m.hexdigest()
+
+def utf8Sha1Bytes(s:str) ->bytes:
+    m = hashlib.sha1()
+    m.update(s.encode("utf-8"))
+    return m.digest()
+
+def utf8Sha1Hex(s:str) ->bytes:
+    m = hashlib.sha1()
+    m.update(s.encode("utf-8"))
+    return m.hexdigest()
+
+def xorBytes(bytes1 : bytes, bytes2: bytes) -> bytes:
+    return b"".join([(x^y).to_bytes(1, "big") for x,y in zip(bytes1, bytes2)])
+
+def bytesToHex(bytes1: bytes) -> str:
+    return "".join([format(b, "02x") for b in bytes1])
 
 import hashlib
 def xorUtf8Md5(string1:str, string2:str) -> str:
-    m1 = hashlib.md5()
-    m1.update(string1.encode("utf-8"))
-    byte1 = m1.digest()
-    m2 = hashlib.md5()
-    m2.update(string2.encode("utf-8"))
-    byte2 = m2.digest()
-    byte3 = xorBytes(byte1, byte2)
-    byte3hex = "".join([format(b, "02x") for b in byte3])
+    bytes1 = utf8md5Bytes(string1)
+    bytes2 = utf8md5Bytes(string2)
+    bytes3 =  xorBytes(bytes1, bytes2)
 
-    hex1 = "".join([format(b, "02x") for b in byte1])
-    hex2 = "".join([format(b, "02x") for b in byte2])
+    hex1 = bytesToHex(bytes1)
+    hex2 = bytesToHex(bytes2)
     hex3 = xorHexStrings(hex1, hex2)
 
-    assert(byte3hex == hex3)
-    return byte3hex
+    assert(bytesToHex(bytes3) == hex3)
+    return hex3
 
 def xorUtf8Sha1(string1: str, string2: str) -> str:
-    m1 = hashlib.sha1()
-    m1.update(string1.encode("utf-8"))
-    byte1 = m1.digest()
-    m2 = hashlib.sha1()
-    m2.update(string2.encode("utf-8"))
-    byte2 = m2.digest()
-    byte3 = xorBytes(byte1, byte2)
-    byte3hex = "".join([format(b, "02x") for b in byte3])
+    bytes1 = utf8Sha1Bytes(string1)
+    bytes2 = utf8Sha1Bytes(string2)
+    bytes3 = xorBytes(bytes1, bytes2)
 
-    hex1 = "".join([format(b, "02x") for b in byte1])
-    hex2 = "".join([format(b, "02x") for b in byte2])
+    hex1 = utf8Sha1Hex(string1)
+    hex2 = utf8Sha1Hex(string2)
     hex3 = xorHexStrings(hex1, hex2)
 
-    assert(byte3hex == hex3)
-    return byte3hex
+    assert(bytesToHex(bytes3) == hex3)
+    return hex3
 
 if __name__ == "__main__":
     print(xorUtf8Md5("hello", "world"))

@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "xor.py",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/xor.py",
+            "console": "integratedTerminal"
+        },
+        {
             "name": "hello.py",
             "type": "python",
             "request": "launch",
