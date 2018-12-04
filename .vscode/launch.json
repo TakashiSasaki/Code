@@ -5,9 +5,9 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Marker",
+            "name": "BaseMarker",
             "type": "python",
-            "program": "${workspaceFolder}/marker/Marker.py",
+            "program": "${workspaceFolder}/marker/BaseMarker.py",
             "request": "launch"
         },
         {   
