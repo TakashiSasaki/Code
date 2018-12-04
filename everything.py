@@ -1,18 +1,16 @@
 import socket
-hostname = socket.gethostname()
-
 import http.client
 import urllib.parse
-urllib.parse.urlencode("")
 import json
 
 class Everything():
     def __init__(self, ipAddress, port):
         Everything.hostname = socket.gethostname()
         if ipAddress is None:
-            for i in range(1,256):
+            for i in range(1, 256):
                 print(i)
-                httpConnection = http.client.HTTPConnection("127.0.0." + str(i), timeout=1)
+                httpConnection = http.client.HTTPConnection(
+                    "127.0.0." + str(i), timeout=1)
                 try:
                     httpConnection.request("GET", "/")
                     response = httpConnection.getresponse()
@@ -32,19 +30,21 @@ class Everything():
             self.port = port
 
     def query(self, queryString):
-        httpConnection = http.client.HTTPConnection(self.ipAddress, port=self.port, timeout=2)
+        httpConnection = http.client.HTTPConnection(
+            self.ipAddress, port=self.port, timeout=2)
         httpConnection.request("GET", "/?" + urllib.parse.urlencode({
-            "j":1,
-            "q":queryString,
-            "path":1,
-            "size":1,
-            "date_modified_column":1,
-            "date_created_column":1,
-            "attributes_column":1
-            }))
+            "j": 1,
+            "q": queryString,
+            "path": 1,
+            "size": 1,
+            "date_modified_column": 1,
+            "date_created_column": 1,
+            "attributes_column": 1
+        }))
         jsonString = httpConnection.getresponse()
         o = json.load(jsonString)
         return o
+
 
 if __name__ == "__main__":
     e = Everything("127.0.0.3", 80)
