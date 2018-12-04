@@ -1,0 +1,2 @@
+class BaseMarker(object):
+    pass
