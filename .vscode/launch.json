@@ -4,6 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        {   
+            "name" : "everything",
+            "type" : "python",
+            "program": "${workspaceFolder}/everything/__init__.py",
+            "request": "launch"
+        },
         {
             "name": "xor.py",
             "type": "python",
