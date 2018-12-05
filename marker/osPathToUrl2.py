@@ -11,3 +11,4 @@ def osPathToUrl2(osPath):
     assert purePath.is_absolute
     url = purePath.as_uri()
     return "file://" + hostname + url[7:]
+

@@ -18,7 +18,7 @@ def splitAll(s):
     components.reverse()
     return components
 
-def osPathToUrl(osPath):
+def osPathToUrl1(osPath):
     osPath = re.sub("/+", "/", osPath)
     osPath = re.sub("\\\\+", "\\\\", osPath)
     hostname = socket.gethostname()
