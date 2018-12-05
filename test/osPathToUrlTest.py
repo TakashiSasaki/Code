@@ -1,7 +1,4 @@
-import unittest
-import pathlib
-import marker
-import marker.FileUrl
+import unittest, pathlib, marker, os.path
 
 class osPathToUrlTest(unittest.TestCase):
     path1 = "///a//b////c"
@@ -31,3 +28,9 @@ class osPathToUrlTest(unittest.TestCase):
         x = marker.FileUrl("file://aaa/b/c/d")
         self.assertEqual(x.netloc, "aaa")
         self.assertEqual(x.path, "/b/c/d")
+
+    def test_FileUrl2(self):
+        absPath = os.path.abspath(".")
+        x = marker.FileUrl()
+        x.fromOsPath(absPath)
+        print(x.netloc, x.path)

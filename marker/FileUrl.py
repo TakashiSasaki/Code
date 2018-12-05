@@ -3,7 +3,11 @@ import os, re, urllib, pathlib, socket
 class FileUrl(object):
     __slots__=["netloc", "path"]
 
-    def __init__(self, fileUrl):
+    def __init__(self, fileUrl=None):
+        if fileUrl is None:
+            self.netloc = ""
+            self.path = ""
+            return
         parseResult = urllib.parse.urlparse(fileUrl)
         assert parseResult.scheme == "file"
         self.netloc = parseResult.netloc
@@ -18,8 +22,6 @@ class FileUrl(object):
 def splitAll(s):
     components = []
     drive, path = os.path.splitdrive(s)
-    if isinstance(drive, str) and len(drive) >0:
-        components.append(drive.lower())
     head = path
     tail = None
     while True:
@@ -30,6 +32,8 @@ def splitAll(s):
         if tail == "" and head == "\\": break
         if tail == "\\" and head == "": break
         if tail != "": components.append(tail)
+    if isinstance(drive, str) and len(drive) >0:
+        components.append(drive.lower())
     components.reverse()
     return components
 
