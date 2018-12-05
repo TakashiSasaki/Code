@@ -1,21 +1,26 @@
 import os, re, urllib, pathlib, socket
 
 class FileUrl(object):
+    __slots__=["netloc", "path"]
+
     def __init__(self, fileUrl):
-        self.fileUrl = fileUrl
-    
+        parseResult = urllib.parse.urlparse(fileUrl)
+        assert parseResult.scheme == "file"
+        self.netloc = parseResult.netloc
+        self.path = parseResult.path
+
     def fromOsPath(self, osPath):
         fileUrl1 = osPathToUrl1(osPath)
         fileUrl2 = osPathToUrl2(osPath)
         assert fileUrl1 == fileUrl2
-        self.fileUrl = fileUrl1
+        self.__init__(fileUrl1)
     
 def splitAll(s):
     components = []
     drive, path = os.path.splitdrive(s)
     if isinstance(drive, str) and len(drive) >0:
         components.append(drive.lower())
-    head = s
+    head = path
     tail = None
     while True:
         head, tail = os.path.split(head)
@@ -37,8 +42,6 @@ def osPathToUrl1(osPath):
     joinedPath = "/".join(splitPath)
     return "file://" + hostname + "/" + joinedPath
 
-import pathlib, re, socket
-
 def osPathToUrl2(osPath):
     osPath = re.sub("/+", "/", osPath)
     osPath = re.sub("\\\\+", "\\\\", osPath)
@@ -50,3 +53,8 @@ def osPathToUrl2(osPath):
     assert purePath.is_absolute
     url = purePath.as_uri()
     return "file://" + hostname + url[7:]
+
+if __name__ == "__main__":
+    x = urllib.parse.urlparse("file://a/b/c/d")
+    print(x)
+    pass
