@@ -1,16 +1,23 @@
 import unittest
 import marker.osPathToUrl
+import marker.osPathToUrl2
+import pathlib
 
 class osPathToUrl(unittest.TestCase):
+    path1 = "///a//b////c"
+    path2 = "\\\\\\a\\\\\\\\b\\\\\\\\c\\d"
+
     def test_path1(self):
-        path1 = "///a//b////c"
-        x = marker.osPathToUrl.osPathToUrl(path1)
+        x = marker.osPathToUrl.osPathToUrl(osPathToUrl.path1)
         self.assertRegex(x, "file://.+/a/b/c")
     
     def test_path2(self):
-        path2 = "\\\\\\a\\\\\\\\b\\\\\\\\c\\d"
-        x = marker.osPathToUrl.osPathToUrl(path2)
+        x = marker.osPathToUrl.osPathToUrl(osPathToUrl.path2)
         self.assertRegex(x, "file://.+/a/b/c/d")
+
+    def test_path3(self):
+        x = marker.osPathToUrl2.osPathToUrl2(osPathToUrl.path1)
+        self.assertRegex(x, "file://.+/a/b/c")
 
     def test_splitAll_1(self):
         x = marker.osPathToUrl.splitAll("/a/b/c")
