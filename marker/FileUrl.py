@@ -6,22 +6,23 @@ hostname = hostname.lower()
 class FileUrl(object):
     __slots__=["netloc", "path"]
 
-    def __init__(self, fileUrl=None):
-        if fileUrl is None:
+    def __init__(self, fileUrlOrPath=None):
+        if fileUrlOrPath is None:
             self.netloc = ""
             self.path = ""
             return
-        parseResult = urllib.parse.urlparse(fileUrl)
-        assert parseResult.scheme == "file"
-        self.netloc = parseResult.netloc
-        self.path = parseResult.path
 
-    def fromOsPath(self, osPath):
-        fileUrl1 = osPathToUrl1(osPath)
-        fileUrl2 = osPathToUrl2(osPath)
+        parseResult = urllib.parse.urlparse(fileUrlOrPath)
+        if parseResult.scheme == "file":
+            self.netloc = parseResult.netloc
+            self.path = parseResult.path
+            return
+
+        fileUrl1 = osPathToUrl1(fileUrlOrPath)
+        fileUrl2 = osPathToUrl2(fileUrlOrPath)
         assert fileUrl1 == fileUrl2
         self.__init__(fileUrl1)
-    
+
 def splitAll(s):
     components = []
     drive, path = os.path.splitdrive(s)

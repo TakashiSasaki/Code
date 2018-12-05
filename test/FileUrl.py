@@ -31,6 +31,6 @@ class osPathToUrlTest(unittest.TestCase):
 
     def test_FileUrl2(self):
         absPath = os.path.abspath(".")
-        x = marker.FileUrl()
-        x.fromOsPath(absPath)
-        print(x.netloc, x.path)
+        x = marker.FileUrl(absPath)
+        self.assertRegex(x.netloc, ".+")
+        self.assertRegex(x.path, "/.:/.+[^/]")
