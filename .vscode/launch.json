@@ -4,7 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+    {
+        "name": "osPathToUrl.py",
+        "type": "python",
+        "request": "launch",
+        "program": "${workspaceFolder}/marker/osPathToUrl.py",
+        "console": "integratedTerminal"
+    },
         {
             "name": "BaseMarker",
             "type": "python",

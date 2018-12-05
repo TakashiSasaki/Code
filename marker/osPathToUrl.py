@@ -1,27 +1,28 @@
 import re, socket, os.path
 
+def splitAll(s):
+    components = []
+    drive, path = os.path.splitdrive(s)
+    if isinstance(drive, str) and len(drive) >0:
+        components.append(drive.lower())
+    head = s
+    tail = None
+    while True:
+        head, tail = os.path.split(head)
+        if tail == "" and head == "": break
+        if tail == "" and head == "/": break
+        if tail == "/" and head == "": break
+        if tail == "" and head == "\\": break
+        if tail == "\\" and head == "": break
+        if tail != "": components.append(tail)
+    components.reverse()
+    return components
+
 def osPathToUrl(osPath):
     osPath = re.sub("/+", "/", osPath)
     osPath = re.sub("\\\\+", "\\\\", osPath)
     hostname = socket.gethostname()
     hostname = hostname.lower()
-    #absolutePath = os.path.abspath(osPath)
-    components = [""]
-    drive, path = os.path.splitdrive(osPath)
-    if isinstance(drive, str) and len(drive) >0:
-        components.append(drive.lower())
-    splitPath = os.path.split(path)
-    if len(splitPath) == 0:
-        components.append(splitPath[0])
-    else:
-        headDir = splitPath[0]
-        tailDir = splitPath[1:]
-        if len(headDir) == 0: pass
-        elif headDir == "\\": pass
-        elif headDir[0] == "\\":
-            components.append(headDir[1:])
-        elif headDir[0] == "/":
-            components.append(headDir[1:])
-    components += tailDir
-    joinedPath = "/".join(components)
-    return joinedPath
+    splitPath = splitAll(osPath)
+    joinedPath = "/".join(splitPath)
+    return "file://" + hostname + "/" + joinedPath
