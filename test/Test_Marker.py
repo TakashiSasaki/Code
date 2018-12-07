@@ -1,8 +1,16 @@
-import marker.Marker
-import unittest
+from unittest import TestCase
+from marker import Marker
+import os.path
 
-class Test_Marker(unittest.TestCase):
+class Test_Marker(TestCase):
     def setUp(self):
         pass
+
     def test(self):
-        m = marker.Marker.Marker()
+        self.assertEqual(os.path.sep, "\\")
+        self.assertEqual(os.path.altsep, "/")
+        self.assertEqual(os.path.pathsep, ";")
+
+    def test_magic(self):
+        m = Marker()
+        self.assertTrue(m.checkDnsMagic())

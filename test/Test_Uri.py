@@ -13,7 +13,6 @@ URLS = [
     "scheme://netloc/path;parameters?query#fragment"
 ]
 
-
 class Test_Uri(TestCase):
     def setUp(self):
         pass
