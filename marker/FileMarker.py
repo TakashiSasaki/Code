@@ -1,6 +1,7 @@
 import marker.BaseMarker
 import os
 import os.path
+from .FileUrl import FileUrl
 
 class FileMarker(marker.BaseMarker.BaseMarker):
     def __init__(self, filePath):

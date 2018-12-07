@@ -61,8 +61,3 @@ def osPathToUrl2(osPath):
     assert purePath.is_absolute
     url = purePath.as_uri()
     return "file://" + hostname + url[7:]
-
-if __name__ == "__main__":
-    x = urllib.parse.urlparse("file://a/b/c/d")
-    print(x)
-    pass
