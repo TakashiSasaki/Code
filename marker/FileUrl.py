@@ -1,10 +1,10 @@
 import os, re, urllib, pathlib, socket
+from .Uri import Uri
 
 hostname = socket.gethostname()
 hostname = hostname.lower()
 
-class FileUrl(object):
-    __slots__=["netloc", "path"]
+class FileUrl(Uri):
 
     def __init__(self, fileUrlOrPath=None):
         if fileUrlOrPath is None:
@@ -44,8 +44,6 @@ def splitAll(s):
 def osPathToUrl1(osPath):
     osPath = re.sub("/+", "/", osPath)
     osPath = re.sub("\\\\+", "\\\\", osPath)
-    #hostname = socket.gethostname()
-    #hostname = hostname.lower()
     splitPath = splitAll(osPath)
     joinedPath = "/".join(splitPath)
     return "file://" + hostname + "/" + joinedPath
@@ -53,8 +51,6 @@ def osPathToUrl1(osPath):
 def osPathToUrl2(osPath):
     osPath = re.sub("/+", "/", osPath)
     osPath = re.sub("\\\\+", "\\\\", osPath)
-    #hostname = socket.gethostname()
-    #hostname = hostname.lower()
     purePath = pathlib.PurePath(osPath)
     if purePath.is_absolute() == False:
         purePath = pathlib.PurePosixPath(osPath)
