@@ -27,6 +27,7 @@ class Md5Bytes(object):
     def fromHex(self, h:str):
         b = binascii.a2b_hex(h)
         self.__init__(b)
+        return self
 
     def __repr__(self) -> str:
         return binascii.hexlify(self.bytes)

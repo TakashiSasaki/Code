@@ -1,6 +1,6 @@
 import hashlib
-from hex import bytesToHex
-from xor import xorHexStrings
+from .hex import bytesToHex
+from .xor import xorHexStrings
 
 class Md5Hex(object):
     __slots__=["hex"]
@@ -30,6 +30,6 @@ class Md5Hex(object):
     def __repr__(self) -> str:
         return self.hex
 
-    def __xor__(self, right: Md5Hex) -> Md5Hex:
+    def __xor__(self, right):
         return Md5Hex(xorHexStrings(self.hex, right.hex))
 
